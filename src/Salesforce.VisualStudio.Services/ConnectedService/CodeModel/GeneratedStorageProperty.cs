@@ -18,6 +18,17 @@ namespace Salesforce.VisualStudio.Services.ConnectedService.CodeModel
 
         public bool IsKey { get; internal set; }
 
+        public bool IsRequired
+        {
+            get
+            {
+                return !this.Model.Nillable
+                    && this.Model.Createable
+                    && this.Model.Updateable
+                    && this.Model.DefaultValue == null;
+            }
+        }
+
         public SObjectField Model { get; internal set; }
     }
 }

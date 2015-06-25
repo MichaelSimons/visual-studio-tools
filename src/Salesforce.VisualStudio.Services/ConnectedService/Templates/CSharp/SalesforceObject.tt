@@ -32,6 +32,13 @@ foreach (GeneratedStorageProperty storageProperty in generatedObject.StorageProp
 <#
     }
 
+    if (storageProperty.IsRequired)
+    {
+#>
+        [Required]
+<#
+    }
+
     if (storageProperty.Model.Label != null && storageProperty.Model.Label != storageProperty.Model.Name)
     {
 #>
@@ -68,8 +75,7 @@ foreach (GeneratedStorageProperty storageProperty in generatedObject.StorageProp
     {
         createableUpdateable += "Createable(false)";
     }
-    // BUG: As of 9/25/14, Salesforce doesn't set Updateable as false on the OwnerId property, which is only createable.
-    if (!storageProperty.Model.Updateable || storageProperty.Model.Name == "OwnerId") 
+    if (!storageProperty.Model.Updateable)
     {
         createableUpdateable += (createableUpdateable.Length > 0) ? ", Updateable(false)" : "Updateable(false)";
     }

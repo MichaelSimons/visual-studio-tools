@@ -10,6 +10,8 @@ namespace Salesforce.VisualStudio.Services.ConnectedService.CodeModel
     [Serializable]
     public class SObjectField
     {
+        private bool updateable;
+
         internal SObjectField()
         {
         }
@@ -106,7 +108,15 @@ namespace Salesforce.VisualStudio.Services.ConnectedService.CodeModel
 
         public bool Unique { get; set; }
 
-        public bool Updateable { get; set; }
+        public bool Updateable
+        {
+            get
+            {
+                // BUG: As of 6/24/15, Salesforce doesn't set Updateable as false on the OwnerId property, which is only createable.
+                return this.updateable && this.Name != "OwnerId";
+            }
+            set { this.updateable = value; }
+        }
 
         public bool WriteRequiresMasterRead { get; set; }
     }
